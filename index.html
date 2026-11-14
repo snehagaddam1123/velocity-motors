@@ -951,9 +951,9 @@ $$('.rv').forEach(el=>io.observe(el));
 const rooms=[{src:'images/showroom-bmw-marble.jpg',t:'The Entrance'},{src:'images/showroom-marble-hall.jpg',t:'The Marble Hall'},{src:'images/showroom-gold-corridor.jpg',t:'The Gold Corridor'},{src:'images/showroom-atrium-lounge.jpg',t:'The Atrium Lounge'}];
 const walk=$('#walk'),wView=$('#wview'),wd=$('#wdolly'),wz=$('#wzoom'),wimg=$('#wimg');
 let wi=0,wsc=1,wtx=0,wty=0,wbusy=false;
-function wApply(smooth){wz.style.transition=smooth?'transform .45s cubic-bezier(.22,.8,.24,1)':'none';wz.style.transform=`translate3d(${wtx}px,${wty}px,0) scale(${wsc})`;wView.classList.toggle('max',wsc>=3.9)}
+function wApply(smooth){wz.style.transition=smooth?'transform .45s cubic-bezier(.22,.8,.24,1)':'none';wz.style.transform=`translate3d(${wtx}px,${wty}px,0) scale(${wsc})`;wView.classList.toggle('max',wsc>=2.45)}
 function wClamp(){const W=walk.clientWidth,H=walk.clientHeight,mx=(W*wsc-W)/2,my=(H*wsc-H)/2;wtx=Math.max(-mx,Math.min(mx,wtx));wty=Math.max(-my,Math.min(my,wty))}
-function wZoom(f){wsc=Math.max(1,Math.min(4,wsc*f));if(wsc<1.02){wsc=1;wtx=wty=0}wClamp();wApply(true)}
+function wZoom(f){wsc=Math.max(1,Math.min(2.5,wsc*f));if(wsc<1.02){wsc=1;wtx=wty=0}wClamp();wApply(true)}
 function wLoad(i,cb){wi=i;const r=rooms[i];let done=false;const fin=()=>{if(!done){done=true;cb&&cb()}};
   wimg.onload=fin;wimg.src=r.src;
   $('#wcap').textContent=r.t;$('#wcnt').textContent=`${i+1} / ${rooms.length}`;if(wimg.complete)setTimeout(fin,30);setTimeout(fin,2500)}
@@ -969,7 +969,7 @@ wView.addEventListener('pointerdown',e=>{wdrag={x:e.clientX,y:e.clientY,tx:wtx,t
 addEventListener('pointermove',e=>{if(!wdrag)return;const dx=e.clientX-wdrag.x,dy=e.clientY-wdrag.y;if(Math.abs(dx)+Math.abs(dy)>5)wdrag.m=true;
   if(wdrag.m&&wsc>1){wView.classList.add('pan');wtx=wdrag.tx+dx;wty=wdrag.ty+dy;wClamp();wApply(false)}});
 addEventListener('pointerup',()=>{if(!wdrag)return;const moved=wdrag.m;wdrag=null;wView.classList.remove('pan');
-  if(!moved&&walk.classList.contains('on')){if(wsc>=3.9){wsc=1;wtx=wty=0;wApply(true)}else wZoom(1.7)}});
+  if(!moved&&walk.classList.contains('on')){if(wsc>=2.45){wsc=1;wtx=wty=0;wApply(true)}else wZoom(1.7)}});
 wView.addEventListener('wheel',e=>{e.preventDefault();wZoom(e.deltaY<0?1.18:1/1.18)},{passive:false});
 addEventListener('keydown',e=>{if(!walk.classList.contains('on'))return;
   if(e.key==='Escape')closeWalk();else if(e.key==='ArrowRight')wGo(1);else if(e.key==='ArrowLeft')wGo(-1);else if(e.key==='+'||e.key==='=')wZoom(1.4);else if(e.key==='-'||e.key==='_')wZoom(1/1.4)});
