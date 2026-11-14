@@ -903,7 +903,7 @@ const cars=[
 const ic=i=>`<svg><use href="#i-${i}"/></svg>`;
 $('#rail').innerHTML=cars.map((c,ix)=>`
 <article class="car">
-  <div class="pic" data-act="details" data-i="${ix}" title="Open 360° view"><span class="b360"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="12" rx="9" ry="4"/><path d="M12 3v3M12 18v3"/></svg>360°</span><img loading="lazy" decoding="async" alt="${c.b} ${c.n}" src="https://images.pexels.com/photos/${c.img}/pexels-photo-${c.img}.jpeg?auto=compress&cs=tinysrgb&w=900&h=620&fit=crop">
+  <div class="pic" data-act="details" data-i="${ix}" title="Open 360° view"><span class="b360"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="12" rx="9" ry="4"/><path d="M12 3v3M12 18v3"/></svg>360°</span><img loading="lazy" decoding="async" alt="${c.b} ${c.n}" src="images/car-${c.img}.jpg">
   <div class="chips"><b>${c.b}</b><b class="${c.hot?'hot':''}">${c.tag}</b></div></div>
   <div class="meta"><h3>${c.n}</h3><div class="ver">${c.v}</div>
     <div class="specs"><div>${ic('gauge')}${c.km} km</div><div>${ic('fuel')}${c.f}</div><div>${ic('gear')}${c.g}</div></div>
@@ -984,7 +984,7 @@ let viz=null;
 function killViz(){if(viz){viz.stop();viz=null}}
 function setView(i,v){const c=cars[i],st=$('#mstage');if(!st)return;killViz();
   $$('.mtab').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
-  if(v==='photo'){st.innerHTML=`<img alt="${c.b} ${c.n}" src="https://images.pexels.com/photos/${c.img}/pexels-photo-${c.img}.jpeg?auto=compress&cs=tinysrgb&w=1200&h=900&fit=crop">`;return}
+  if(v==='photo'){st.innerHTML=`<img alt="${c.b} ${c.n}" src="images/car-${c.img}.jpg">`;return}
   if(c.sk){st.innerHTML=`<div class="v-load"><i></i>Loading 360° model</div><iframe title="${c.b} ${c.n} 360° view" src="https://sketchfab.com/models/${c.sk}/embed?autostart=1&preload=1&ui_theme=dark&ui_infos=0&ui_watermark=0&ui_hint=2&ui_stop=0&dnt=1&camera=0&animation_autoplay=0&autospin=0.2&annotations_visible=0&transparent=1" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe><div class="v-credit">Interactive 3D · drag to rotate, scroll to zoom</div>`;return}
   st.innerHTML='<div class="v-load"><i></i>Loading 360° model</div>';
   mount360(st,c).then(h=>{if(h&&$('#mstage')===st)viz=h;else if(h)h.stop()}).catch(()=>{st.innerHTML='<div class="v-load">360° view needs WebGL — try another browser.</div>'})}
@@ -1027,7 +1027,7 @@ function showInv(b){
   const brands=['All',...new Set(cars.map(c=>c.b))];const list=cars.map((c,i)=>({c,i})).filter(x=>b==='All'||x.c.b===b);
   openMod(`<div class="minv"><div class="eyebrow">Curated Fleet</div><h3>Full inventory <em>(${list.length})</em></h3>
   <div class="mchips">${brands.map(x=>`<button type="button" class="mchip ${x===b?'on':''}" data-act="filter" data-b="${x}">${x}</button>`).join('')}</div>
-  <div class="mg">${list.map(({c,i})=>`<article class="mc"><img data-act="details" data-i="${i}" style="cursor:pointer" loading="lazy" alt="${c.b} ${c.n}" src="https://images.pexels.com/photos/${c.img}/pexels-photo-${c.img}.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop">
+  <div class="mg">${list.map(({c,i})=>`<article class="mc"><img data-act="details" data-i="${i}" style="cursor:pointer" loading="lazy" alt="${c.b} ${c.n}" src="images/car-${c.img}.jpg">
   <div class="mm"><small>${c.b} · ${c.tag}</small><h4>${c.n}</h4><div class="mv">${c.v}</div><div class="mp">${c.p}</div>
   <div class="row"><button type="button" class="btn ghost sm" data-act="details" data-i="${i}" style="justify-content:center">Details</button><button type="button" class="btn solid sm" data-act="enquire" data-i="${i}" style="justify-content:center"><span>Enquire</span></button></div></div></article>`).join('')}</div></div>`,true)}
 function showDetails(i,view='360'){const c=cars[i];
